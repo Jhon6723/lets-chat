@@ -1,0 +1,26 @@
+{
+  "deepl": {
+    "plain": "¿Has comido ya?",
+    "colloquial": "Esto es demasiado descabellado, ¿de verdad lo ha hecho?",
+    "emoji": "Hoy estoy agotada😭. He estado haciendo horas extras y hasta ahora no he podido salir del trabajo.",
+    "code-switch": "Mañana tengo una reunión, no llegues tarde.",
+    "slang": "Estoy al límite, el jefe ha vuelto a cambiar los requisitos.",
+    "mention-url": "@Xiaoming, ¡mira esto! https://example.com Me he partido de risa, jajaja",
+    "idiomatic": "Esto lo decides tú, yo ya no me meto en el asunto.",
+    "tone": "No hables con ese tono enigmático, di lo que tengas que decir sin rodeos.",
+    "multiline": "La reunión es mañana a las diez de la mañana.\nNo te olvides de traer la propuesta.\nNo te vuelvas a olvidar.",
+    "long": "La verdad es que ya llevaba tiempo queriendo decírtelo, pero no había encontrado el momento adecuado. Creo que seguir así no es la solución, ¿qué tal si encontramos un momento para hablarlo tranquilamente?"
+  },
+  "deepseek": {
+    "plain": "¿Ya comiste?",
+    "colloquial": "Esto es demasiado increíble, ¿de verdad lo hizo?",
+    "emoji": "Hoy estoy muerto de cansancio😭 Trabajé horas extra y apenas ahora salí del trabajo",
+    "code-switch": "Mañana tengo una reunión, no llegues tarde.",
+    "slang": "Me estoy volviendo loco, el jefe volvió a cambiar los requisitos.",
+    "mention-url": "@小明 Mira esto https://example.com me muero de risa jajaja",
+    "idiomatic": "Haz lo que quieras con esto, ya no me encargo.",
+    "tone": "No seas sarcástico, di las cosas directamente.",
+    "multiline": "Mañana a las diez de la mañana hay reunión\nRecuerda traer el plan\nNo lo olvides otra vez",
+    "long": "En realidad, ya quería decírtelo antes, pero nunca encontré el momento adecuado. Creo que seguir así no es la solución, ¿qué tal si buscamos un momento para hablar bien?"
+  }
+}

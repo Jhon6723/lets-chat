@@ -1,0 +1,8 @@
+{
+  "name": "spike-02-translation",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bench": "node --env-file=.env src/benchmark.mjs"
+  }
+}
