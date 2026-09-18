@@ -1,0 +1,57 @@
+.spike {
+  max-width: 760px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: system-ui, sans-serif;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+button {
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+th,
+td {
+  border: 1px solid #555;
+  padding: 0.5rem;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.pass {
+  color: #2ecc71;
+  font-weight: 700;
+}
+
+.fail {
+  color: #e74c3c;
+  font-weight: 700;
+}
+
+.log {
+  background: #111;
+  color: #ddd;
+  padding: 1rem;
+  font-size: 0.8rem;
+  max-height: 320px;
+  overflow: auto;
+  white-space: pre-wrap;
+}
+
+.error {
+  color: #e74c3c;
+  white-space: pre-wrap;
+}
