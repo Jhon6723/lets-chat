@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{33029772-977E-4771-8DC3-42D4FCA46BF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsChat.Domain", "src\LetsChat.Domain\LetsChat.Domain.csproj", "{0E741930-B3FB-431F-A319-ACB346A8F4FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsChat.Application", "src\LetsChat.Application\LetsChat.Application.csproj", "{7D6B4CF8-55FD-4E8D-A023-345EF9223FE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsChat.Contracts", "src\LetsChat.Contracts\LetsChat.Contracts.csproj", "{99A15CA3-23BF-420B-916C-A5D9A44E32BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsChat.Infrastructure", "src\LetsChat.Infrastructure\LetsChat.Infrastructure.csproj", "{42141275-D5DC-40D8-A3D0-9701219104CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsChat.Api", "src\LetsChat.Api\LetsChat.Api.csproj", "{DCE16DC9-E0FD-445F-9DA3-51AF47733228}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E741930-B3FB-431F-A319-ACB346A8F4FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E741930-B3FB-431F-A319-ACB346A8F4FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E741930-B3FB-431F-A319-ACB346A8F4FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E741930-B3FB-431F-A319-ACB346A8F4FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D6B4CF8-55FD-4E8D-A023-345EF9223FE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D6B4CF8-55FD-4E8D-A023-345EF9223FE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D6B4CF8-55FD-4E8D-A023-345EF9223FE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D6B4CF8-55FD-4E8D-A023-345EF9223FE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99A15CA3-23BF-420B-916C-A5D9A44E32BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99A15CA3-23BF-420B-916C-A5D9A44E32BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99A15CA3-23BF-420B-916C-A5D9A44E32BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99A15CA3-23BF-420B-916C-A5D9A44E32BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42141275-D5DC-40D8-A3D0-9701219104CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42141275-D5DC-40D8-A3D0-9701219104CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42141275-D5DC-40D8-A3D0-9701219104CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42141275-D5DC-40D8-A3D0-9701219104CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCE16DC9-E0FD-445F-9DA3-51AF47733228}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCE16DC9-E0FD-445F-9DA3-51AF47733228}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCE16DC9-E0FD-445F-9DA3-51AF47733228}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCE16DC9-E0FD-445F-9DA3-51AF47733228}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0E741930-B3FB-431F-A319-ACB346A8F4FA} = {33029772-977E-4771-8DC3-42D4FCA46BF7}
+		{7D6B4CF8-55FD-4E8D-A023-345EF9223FE5} = {33029772-977E-4771-8DC3-42D4FCA46BF7}
+		{99A15CA3-23BF-420B-916C-A5D9A44E32BB} = {33029772-977E-4771-8DC3-42D4FCA46BF7}
+		{42141275-D5DC-40D8-A3D0-9701219104CF} = {33029772-977E-4771-8DC3-42D4FCA46BF7}
+		{DCE16DC9-E0FD-445F-9DA3-51AF47733228} = {33029772-977E-4771-8DC3-42D4FCA46BF7}
+	EndGlobalSection
+EndGlobal

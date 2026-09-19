@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\LetsChat.Application\LetsChat.Application.csproj" />
+    <ProjectReference Include="..\LetsChat.Infrastructure\LetsChat.Infrastructure.csproj" />
+    <ProjectReference Include="..\LetsChat.Contracts\LetsChat.Contracts.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>

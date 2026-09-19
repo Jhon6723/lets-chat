@@ -1,0 +1,74 @@
+## Build output
+[Bb]in/
+[Oo]bj/
+
+## User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+## Visual Studio cache/options directory
+.vs/
+*.cache/
+
+## Visual Studio Code (keep extensions.json if needed)
+.vscode/*
+!.vscode/extensions.json
+
+## JetBrains Rider
+.idea/
+
+## Build logs and temporary files
+*.log
+*.tmp
+*.swp
+*.sw?
+
+## NuGet
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+
+## Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+TestResults/
+*.coverage
+*.coveragexml
+coverage*.json
+coverage*.xml
+
+## .NET CLI
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## Publish output
+[Pp]ublish/
+*.[Pp]ublish.xml
+*.azurePubxml
+*.pubxml
+*.publishproj
+*.pubxml.user
+
+## Secrets / environment
+.env
+.env.*
+!.env.example
+appsettings.*.local.json
+secrets.json
+
+## OS files
+.DS_Store
+Thumbs.db
+
+## EF Core tools
+*.dbmdl
+*.ldf
+*.mdf
+
+## Rider / VS generated
+*.DotSettings.user
