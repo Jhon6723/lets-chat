@@ -85,7 +85,7 @@ Rationale:
 1. **Cost structure fits the project.** The database costs nothing beyond the VPS the app already needs; managed alternatives would multiply the monthly bill two- to five-fold for capabilities this architecture deliberately does not use.
 2. **Architectural coherence.** A custom E2EE relay needs an application layer between the network and the data; platforms that collapse that layer (Supabase realtime, Firestore listeners) work against the design rather than for it.
 3. **Data profile is forgiving.** Small working set, high churn, short retention — exactly the profile a modest co-located Postgres handles effortlessly.
-4. **Lock-in avoided.** Plain PostgreSQL with SQL migrations (Flyway/Prisma-migrate per backend tooling) keeps every exit door open.
+4. **Lock-in avoided.** Plain PostgreSQL with EF Core migrations (per the ASP.NET Core backend, ADR 0001 revised) keeps every exit door open.
 
 ### Operational requirements made mandatory by this decision
 

@@ -99,7 +99,7 @@ MLS (Option B) is not rejected — it is **deferred to the groups milestone**, w
 - Credible, spec-backed E2EE without inventing cryptography.
 - The CryptoEngine port keeps the hexagonal rule intact — protocol internals stay behind an interface, swappable if the SDK's API or our needs shift.
 - Clear migration path: 1:1 Signal profile now, MLS for groups later, PQXDH as an upgrade flag.
-- Shared TypeScript protocol types between PWA and backend (ADR 0001 rationale realized).
+- Wire-protocol types shared as a single TypeScript package on the client side; the .NET backend mirrors them as C# models kept honest by contract validation tests (ADR 0001 revised — the cross-language trade-off).
 
 ### Negative and mitigations
 
@@ -124,4 +124,4 @@ Integration quirks discovered (recorded in the spike README):
 
 - `processIncomingEnvelope` does not consume the relay mailbox; the caller must ack with `markDelivered` or the ratchet correctly rejects the replayed envelope as a duplicate.
 - TOFU identity-change detection fails closed (`UntrustedIdentityError`); recovery is `acceptIdentityRotation` behind user confirmation — this is the hook where the safety-number UI will attach later.
-- The `startRelaySubscription` push path consumed envelopes without firing `onMessageDecrypted` on Android; the pull path works reliably. To be re-validated against the real NestJS relay before relying on push.
+- The `startRelaySubscription` push path consumed envelopes without firing `onMessageDecrypted` on Android; the pull path works reliably. To be re-validated against the real relay backend before relying on push.

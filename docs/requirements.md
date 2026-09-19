@@ -91,9 +91,9 @@ Each requirement carries an ID for traceability (RF-xx functional, RNF-xx non-fu
 
 | ID | Requirement | Source |
 | --- | --- | --- |
-| RNF-40 | Backend follows hexagonal architecture: domain and application layers import nothing from NestJS; framework code lives in adapters only — enforced by dependency-boundary linting | ADR 0001 |
+| RNF-40 | Backend follows hexagonal architecture: domain and application layers import nothing from ASP.NET Core or EF Core; framework code lives in adapters only — enforced by dependency-boundary tests | ADR 0001 |
 | RNF-41 | Crypto engine and translation providers are behind ports (CryptoEngine, TranslationProvider), replaceable without domain changes | ADR 0001, ADR 0003, ADR 0006 |
-| RNF-42 | Shared TypeScript protocol types are defined once in a monorepo package consumed by client and server | ADR 0001 |
+| RNF-42 | Wire-protocol types exist once per side — shared/protocol TypeScript package (client source of truth) and C# models (server) — kept in sync by contract validation tests against generated fixtures | ADR 0001 |
 
 ## Post-MVP backlog (not binding)
 

@@ -19,7 +19,7 @@ workspace "Let's Chat" "E2EE encrypted chat PWA with built-in translation" {
             }
 
             api = container "API & Relay" {
-                technology "NestJS (Node.js)"
+                technology "ASP.NET Core (.NET), raw WebSocket"
                 description "Relays ciphertext; proxies consented translations."
             }
 

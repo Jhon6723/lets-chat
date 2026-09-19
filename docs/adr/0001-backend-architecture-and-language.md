@@ -1,7 +1,7 @@
 # ADR 0001: Backend architecture and language
 
-- Status: Accepted
-- Date: 2026-09-16
+- Status: Accepted (revised 2026-09-18: backend changed from NestJS to ASP.NET Core)
+- Date: 2026-09-16 (revised 2026-09-18)
 
 ## Context
 
@@ -103,30 +103,33 @@ High-throughput, mature DI, and excellent real-time support via SignalR.
 
 ## Decision
 
-**Use NestJS (TypeScript, running on Node.js with the Fastify adapter) structured as a hexagonal architecture.**
+**Use ASP.NET Core (C#, .NET) structured as a hexagonal architecture, with raw WebSocket transport and EF Core for persistence.**
 
-The deciding factors, in order:
+Original decision (2026-09-16) was NestJS on Node.js — revised on 2026-09-18 by the product owner before any real backend code existed, making the switch cost essentially zero.
 
-1. **Shared protocol definitions.** In an E2EE system the envelope and key-bundle formats are the most correctness-critical surface in the entire project. Defining them once in a shared TypeScript package consumed by both the PWA client and the backend removes drift risk where a drift bug means undecryptable user messages. No other option offers this.
-2. **Idiomatic hexagonal fit.** The stated architectural preference is directly served by NestJS's DI container and module system, without ceremony.
-3. **Developer velocity.** One language end to end for a solo developer with an academic timeline.
-4. Performance alternatives (Go, Phoenix) optimize for a scale this project does not have; Node comfortably covers the realistic load of relaying small ciphertext payloads.
+The revised deciding factors, in order:
+
+1. **Developer experience.** The solo developer's production stack is .NET (EF Core, ASP.NET Core), stronger than TypeScript/Node. For a single-developer academic project, writing the backend in the stack the author knows best outweighs marginal technical factors.
+2. **Hexagonal fit.** ASP.NET Core's built-in DI with interface registrations maps ports-and-adapters directly — application services depend on interfaces resolved by the container, adapters register implementations. NestJS's default idiom is the modular monolith; ports-and-adapters is achievable but fights the framework's grain (decorators, module boundaries, metadata magic).
+3. **Accepted trade-off: shared protocol types are lost.** The original #1 factor — defining the E2EE wire format once in a shared TypeScript package — cannot survive a cross-language backend. Mitigation chosen (Option B, decided 2026-09-18): the protocol is duplicated by hand between the TS `shared/protocol` package (client source of truth) and C# models, kept honest by **contract validation tests** — fixtures generated from the TS package are deserialized by the .NET models and compared field-by-field in CI. Schema-based codegen (JSON Schema/TypeSpec → TS + C#) was evaluated and deferred: the protocol surface is small (~6 types) and stable; a contract test is sufficient insurance without codegen tooling.
+4. **Raw WebSocket over SignalR.** The relay contract is deliberately minimal — deliver envelopes, ack them, fetch pending. SignalR would wrap our messages in hub framing, require its client library in the PWA, and its headline feature (automatic reconnection) does not solve our actual hard problem: E2EE reconnect requires application-level resync (pending-envelope fetch, ratchet session continuity, re-ack) which must be built regardless. Raw `UseWebSockets` middleware keeps the wire format identical to the shared protocol types — 1:1, no nested framing.
+5. **EF Core + PostgreSQL** for persistence (per ADR 0002), running in Docker on the same VPS.
 
 ## Consequences
 
 ### Positive
 
-- Single language across the stack; shared protocol package lives in a monorepo workspace.
-- Ports and adapters are enforceable through NestJS module boundaries and token-based injection.
-- WebSocket gateways and guards cover connection authentication and room fan-out natively.
-- The Fastify adapter keeps the HTTP layer fast while retaining the NestJS structure.
+- Backend written in the developer's strongest stack — faster iteration, fewer framework-fighting bugs.
+- Idiomatic hexagonal fit via ASP.NET Core DI: domain/application layers depend on interfaces; infrastructure (WS middleware, controllers, EF Core adapters) registers implementations.
+- Mature migration story (EF Core migrations) and testing ecosystem (xUnit, Testcontainers for Postgres integration tests).
+- Top-tier runtime performance per instance — comfortable headroom for a dumb relay.
 
 ### Negative and mitigations
 
-- **Framework leakage risk.** NestJS decorators make it easy to let framework concerns seep into the domain. Mitigation: enforce a package layout where the application and domain layers import nothing from NestJS packages; only adapter modules may depend on the framework. Verified with dependency-boundary linting.
-- **Capacity ceiling.** Node's event loop saturates earlier than Go or BEAM under extreme concurrency. Mitigation: the hexagonal design keeps transport adapters replaceable. If connection scale ever becomes a constraint, a dedicated relay service (Option C or D) can be introduced behind the same application ports without reworking the domain.
-- **Boilerplate weight.** Compared with minimal Node frameworks, NestJS is ceremony-heavy. Accepted knowingly in exchange for structural enforcement.
+- **Protocol drift risk.** Wire types now exist twice (TS for the PWA, C# for the server). A divergence bug means undecryptable messages. Mitigation: contract validation tests — `shared/protocol` generates JSON fixtures; the .NET test suite asserts its models deserialize them field-for-field and serialize back identically. Drift is caught in CI, not compile time. If drift bugs slip through repeatedly, upgrade to schema-based codegen is the documented escalation path.
+- **Two toolchains.** The repo now carries npm (frontend + shared/protocol) and dotnet (backend) toolchains. Accepted: they are independent projects anyway.
+- **Framework leakage risk.** EF Core attributes and ASP.NET attributes can seep into the domain. Mitigation unchanged: domain and application layers import nothing from ASP.NET Core or EF Core; enforced by dependency-boundary tests (e.g., ArchUnitNET-style rules).
 
 ### Revisit triggers
 
-Re-evaluate this decision if: sustained concurrent connections exceed ~20k per instance; the shared-package approach proves unworkable for crypto code that must also run in non-TS environments; or the team grows beyond the solo developer with members stronger in another candidate stack.
+Re-evaluate this decision if: sustained concurrent connections exceed ~20k per instance and a dedicated relay service is introduced (a Go/Elixir relay can sit behind the same application ports); the contract tests repeatedly fail to catch drift (escalate to schema codegen); or the team grows beyond the solo developer with members stronger in another candidate stack.
