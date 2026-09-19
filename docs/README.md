@@ -28,7 +28,7 @@ Let's Chat is a web chat application, installable on Android as a PWA, that comb
 | Area | Decision | Reference |
 | --- | --- | --- |
 | Frontend | Vite + React + TypeScript, PWA | Settled during product definition |
-| Backend | Pending — see ADR 0001 | [ADR 0001](./adr/0001-backend-architecture-and-language.md) |
+| Backend | ASP.NET Core (.NET), hexagonal, raw WebSocket — see ADR 0001 | [ADR 0001](./adr/0001-backend-architecture-and-language.md) |
 | Persistence | Pending — see ADR 0002 | [ADR 0002](./adr/0002-persistence-strategy.md) |
 | Translation engine | Pending — see ADR 0003 | [ADR 0003](./adr/0003-translation-engine.md) |
 
@@ -41,7 +41,10 @@ Let's Chat is a web chat application, installable on Android as a PWA, that comb
 - [ADR 0004: Translation provider catalog](./adr/0004-translation-provider-catalog.md)
 - [ADR 0005: Message storage and backup](./adr/0005-message-storage-and-backup.md)
 - [ADR 0006: E2EE protocol and key management](./adr/0006-e2ee-protocol.md)
+- [ADR 0007: Authentication and identity providers](./adr/0007-authentication-and-identity-providers.md)
+- [Security model (layered defense)](./security-model.md)
 - [Decisions log](./decisions.md)
+- [Implementation plan](./implementation-plan.md)
 - Diagrams: Structurizr DSL sources in `docs/diagrams/code/` (system context and containers), rendered images in `docs/diagrams/img/`
 
 ## Known design tensions
