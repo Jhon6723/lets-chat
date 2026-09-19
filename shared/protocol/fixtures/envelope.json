@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "id": "env-001",
+  "senderAddress": "alice.1",
+  "recipientAddress": "bob.1",
+  "type": "message",
+  "ciphertext": "a8f3b2c9d4e5f60718293a4b5c6d7e8f",
+  "header": "f7e6d5c4b3a2918070605040302010",
+  "createdAt": 1758147600000
+}

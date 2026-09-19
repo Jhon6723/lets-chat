@@ -1,0 +1,20 @@
+{
+  "bundle": {
+    "address": "bob.1",
+    "identityKey": "BQaWxvdWxkLWJlLWEtcmVhbC1rZXktaGVyZQ==",
+    "signedPreKey": {
+      "id": 7,
+      "publicKey": "BHNpZ25lZC1wcmVrZXktcHVia2V5",
+      "signature": "c2lnbmVkLXByZWtleS1zaWduYXR1cmU="
+    },
+    "oneTimePreKey": {
+      "id": 42,
+      "publicKey": "BG9uZS10aW1lLXByZWtleQ=="
+    },
+    "pqLastResortPreKey": {
+      "id": 3,
+      "publicKey": "BHBxLWxhc3QtcmVzb3J0LWtleQ==",
+      "signature": "cHEtc2lnbmF0dXJl"
+    }
+  }
+}
