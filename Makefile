@@ -1,4 +1,4 @@
-.PHONY: fixtures contract-test backend-dev frontend-dev db
+.PHONY: fixtures contract-test backend-dev frontend-dev db migrate
 
 # Regenerate canonical wire fixtures from shared/protocol (run after any protocol change)
 fixtures:
@@ -16,3 +16,7 @@ frontend-dev:
 
 db:
 	docker compose up -d postgres
+
+# Apply EF Core migrations to the running database
+migrate:
+	cd backend && dotnet ef database update --project src/LetsChat.Infrastructure --startup-project src/LetsChat.Api
