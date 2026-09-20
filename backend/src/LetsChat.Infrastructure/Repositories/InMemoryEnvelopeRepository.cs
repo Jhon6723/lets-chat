@@ -2,13 +2,13 @@ using System.Collections.Concurrent;
 using LetsChat.Application.Ports;
 using LetsChat.Contracts;
 
-namespace LetsChat.Infrastructure.EnvelopeStore;
+namespace LetsChat.Infrastructure.Repositories;
 
 /// <summary>
 /// Dev adapter: keeps pending envelopes in memory. Swap for the EF Core
 /// Postgres adapter (ADR-0002) once persistence lands — the port stays identical.
 /// </summary>
-public sealed class InMemoryEnvelopeStore : IEnvelopeStore
+public sealed class InMemoryEnvelopeRepository : IEnvelopeRepository
 {
     private readonly ConcurrentDictionary<string, ConcurrentQueue<EncryptedEnvelope>> _mailboxes = new();
     private readonly ConcurrentDictionary<string, string> _envelopeOwners = new();

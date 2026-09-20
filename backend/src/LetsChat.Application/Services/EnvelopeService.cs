@@ -6,9 +6,9 @@ namespace LetsChat.Application.Services;
 /// <summary>
 /// Application service for envelope relay. Contains the delivery rules:
 /// the server never inspects ciphertext — it only routes, stores and acks.
-/// Depends on the IEnvelopeStore port, injected by DI (ADR-0001).
+/// Depends on the IEnvelopeRepository port, injected by DI (ADR-0001).
 /// </summary>
-public sealed class EnvelopeService(IEnvelopeStore store)
+public sealed class EnvelopeService(IEnvelopeRepository store)
 {
     public async Task RelayAsync(EncryptedEnvelope envelope, CancellationToken ct = default)
     {

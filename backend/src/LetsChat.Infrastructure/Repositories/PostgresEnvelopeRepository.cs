@@ -3,15 +3,15 @@ using LetsChat.Contracts;
 using LetsChat.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace LetsChat.Infrastructure.EnvelopeStore;
+namespace LetsChat.Infrastructure.Repositories;
 
 /// <summary>
 /// Prod adapter (ADR-0002): pending envelopes persist in Postgres until the
 /// recipient acks them. Each operation opens a short-lived context from the
 /// factory — the store itself stays singleton like the port's other impls.
 /// </summary>
-public sealed class PostgresEnvelopeStore(IDbContextFactory<LetsChatDbContext> db)
-    : IEnvelopeStore
+public sealed class PostgresEnvelopeRepository(IDbContextFactory<LetsChatDbContext> db)
+    : IEnvelopeRepository
 {
     public async Task EnqueueAsync(EncryptedEnvelope envelope, CancellationToken ct = default)
     {

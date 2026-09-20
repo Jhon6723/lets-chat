@@ -10,6 +10,8 @@ public sealed class LetsChatDbContext(DbContextOptions<LetsChatDbContext> option
 
     public DbSet<AccountRow> Accounts => Set<AccountRow>();
 
+    public DbSet<RefreshTokenRow> RefreshTokens => Set<RefreshTokenRow>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AccountRow>(b =>
@@ -21,6 +23,22 @@ public sealed class LetsChatDbContext(DbContextOptions<LetsChatDbContext> option
             b.Property(e => e.PasswordHash).HasColumnName("password_hash");
             b.Property(e => e.CreatedAt).HasColumnName("created_at");
             b.HasIndex(e => e.Username).IsUnique();
+        });
+
+        modelBuilder.Entity<RefreshTokenRow>(b =>
+        {
+            b.ToTable("refresh_tokens");
+            b.HasKey(e => e.Id);
+            b.Property(e => e.Id).HasColumnName("id");
+            b.Property(e => e.AccountId).HasColumnName("account_id");
+            b.Property(e => e.FamilyId).HasColumnName("family_id");
+            b.Property(e => e.TokenHash).HasColumnName("token_hash");
+            b.Property(e => e.CreatedAt).HasColumnName("created_at");
+            b.Property(e => e.ExpiresAt).HasColumnName("expires_at");
+            b.Property(e => e.ConsumedAt).HasColumnName("consumed_at");
+            b.Property(e => e.RevokedAt).HasColumnName("revoked_at");
+            b.HasIndex(e => e.TokenHash).IsUnique();
+            b.HasIndex(e => e.FamilyId);
         });
 
         modelBuilder.Entity<PendingEnvelopeRow>(b =>

@@ -4,10 +4,10 @@ namespace LetsChat.Application.Ports;
 
 /// <summary>
 /// Outbound port: where pending envelopes live until the recipient acks them.
-/// Implementations: InMemoryEnvelopeStore (dev), PostgresEnvelopeStore (prod,
+/// Implementations: InMemoryEnvelopeRepository (dev), PostgresEnvelopeRepository (prod,
 /// EF Core — ADR-0002). Registered via DI; the domain never sees a concrete type.
 /// </summary>
-public interface IEnvelopeStore
+public interface IEnvelopeRepository
 {
     /// <summary>Persist an envelope for later delivery to its recipient.</summary>
     Task EnqueueAsync(EncryptedEnvelope envelope, CancellationToken ct = default);

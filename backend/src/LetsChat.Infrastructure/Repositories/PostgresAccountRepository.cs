@@ -4,11 +4,11 @@ using LetsChat.Domain.ValueObjects;
 using LetsChat.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace LetsChat.Infrastructure.AccountStore;
+namespace LetsChat.Infrastructure.Repositories;
 
 /// <summary>Postgres adapter for the account store port.</summary>
-public sealed class PostgresAccountStore(IDbContextFactory<LetsChatDbContext> db)
-    : IAccountStore
+public sealed class PostgresAccountRepository(IDbContextFactory<LetsChatDbContext> db)
+    : IAccountRepository
 {
     public async Task<Account?> FindByUsernameAsync(
         Username username,
@@ -18,6 +18,15 @@ public sealed class PostgresAccountStore(IDbContextFactory<LetsChatDbContext> db
         var row = await ctx.Accounts
             .AsNoTracking()
             .SingleOrDefaultAsync(a => a.Username == username.Value, ct);
+        return row is null ? null : Map(row);
+    }
+
+    public async Task<Account?> FindByIdAsync(Guid id, CancellationToken ct = default)
+    {
+        await using var ctx = await db.CreateDbContextAsync(ct);
+        var row = await ctx.Accounts
+            .AsNoTracking()
+            .SingleOrDefaultAsync(a => a.Id == id, ct);
         return row is null ? null : Map(row);
     }
 

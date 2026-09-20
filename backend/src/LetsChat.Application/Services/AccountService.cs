@@ -10,7 +10,7 @@ namespace LetsChat.Application.Services;
 /// login = verify. Failure modes are deliberately undifferentiated at the
 /// endpoint so username enumeration is not possible from responses.
 /// </summary>
-public sealed class AccountService(IAccountStore accounts, IPasswordHasher hasher)
+public sealed class AccountService(IAccountRepository accounts, IPasswordHasher hasher)
 {
     private const int MinPasswordLength = 10;
 

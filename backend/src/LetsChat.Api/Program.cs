@@ -3,11 +3,12 @@ using LetsChat.Api.Endpoints;
 using LetsChat.Api.Middleware;
 using LetsChat.Application.Ports;
 using LetsChat.Application.Services;
-using LetsChat.Infrastructure.AccountStore;
-using LetsChat.Infrastructure.EnvelopeStore;
 using LetsChat.Infrastructure.Identity;
 using LetsChat.Infrastructure.Persistence;
+using LetsChat.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 // Load repo-root .env before configuration is built (secrets live outside appsettings).
 DotNetEnv.Env.TraversePath().Load();
@@ -23,11 +24,30 @@ var connectionString =
     $"Database={pg("POSTGRES_DB")};Username={pg("POSTGRES_USER")};Password={pg("POSTGRES_PASSWORD")}";
 builder.Services.AddDbContextFactory<LetsChatDbContext>(
     options => options.UseNpgsql(connectionString));
-builder.Services.AddSingleton<IEnvelopeStore, PostgresEnvelopeStore>();
+builder.Services.AddSingleton<IEnvelopeRepository, PostgresEnvelopeRepository>();
 builder.Services.AddSingleton<EnvelopeService>();
-builder.Services.AddSingleton<IAccountStore, PostgresAccountStore>();
+builder.Services.AddSingleton<IAccountRepository, PostgresAccountRepository>();
 builder.Services.AddSingleton<IPasswordHasher, Argon2PasswordHasher>();
 builder.Services.AddSingleton<AccountService>();
+builder.Services.AddSingleton<IRefreshTokenRepository, PostgresRefreshTokenRepository>();
+builder.Services.AddSingleton<ITokenIssuer>(_ => new JwtTokenIssuer(
+    pg("JWT_SIGNING_KEY"), issuer: "lets-chat", audience: "lets-chat-app"));
+builder.Services.AddSingleton<SessionService>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidIssuer = "lets-chat",
+            ValidAudience = "lets-chat-app",
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Convert.FromBase64String(pg("JWT_SIGNING_KEY"))),
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.FromSeconds(30),
+        };
+    });
+builder.Services.AddAuthorization();
 
 // Auth endpoints get a tight per-IP window: credential stuffing resistance
 // (ADR-0007). 10 req/min per IP; bursts get 429, not queued.
@@ -48,6 +68,8 @@ builder.Services.AddRateLimiter(options =>
 var app = builder.Build();
 
 app.UseRateLimiter();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseWebSockets();
 app.MapAuth();
 app.MapGet("/health", () => Results.Ok(new { status = "ok", service = "lets-chat-relay" }));
