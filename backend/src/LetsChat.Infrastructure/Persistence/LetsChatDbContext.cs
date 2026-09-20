@@ -12,6 +12,8 @@ public sealed class LetsChatDbContext(DbContextOptions<LetsChatDbContext> option
 
     public DbSet<RefreshTokenRow> RefreshTokens => Set<RefreshTokenRow>();
 
+    public DbSet<DeviceRow> Devices => Set<DeviceRow>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AccountRow>(b =>
@@ -39,6 +41,24 @@ public sealed class LetsChatDbContext(DbContextOptions<LetsChatDbContext> option
             b.Property(e => e.RevokedAt).HasColumnName("revoked_at");
             b.HasIndex(e => e.TokenHash).IsUnique();
             b.HasIndex(e => e.FamilyId);
+        });
+
+        modelBuilder.Entity<DeviceRow>(b =>
+        {
+            b.ToTable("devices");
+            b.HasKey(e => e.Id);
+            b.Property(e => e.Id).HasColumnName("id");
+            b.Property(e => e.AccountId).HasColumnName("account_id");
+            b.Property(e => e.DeviceNumber).HasColumnName("device_number");
+            b.Property(e => e.IdentityKeyPublic).HasColumnName("identity_key_public");
+            b.Property(e => e.Address).HasColumnName("address");
+            b.Property(e => e.CreatedAt).HasColumnName("created_at");
+            b.HasIndex(e => e.Address).IsUnique();
+            b.HasIndex(e => new { e.AccountId, e.DeviceNumber }).IsUnique();
+            b.HasOne<AccountRow>()
+                .WithMany()
+                .HasForeignKey(e => e.AccountId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<PendingEnvelopeRow>(b =>
