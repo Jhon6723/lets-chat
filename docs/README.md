@@ -44,6 +44,7 @@ Let's Chat is a web chat application, installable on Android as a PWA, that comb
 - [ADR 0007: Authentication and identity providers](./adr/0007-authentication-and-identity-providers.md)
 - [Security model (layered defense)](./security-model.md)
 - [Account session flow (JWT + refresh rotation)](./auth-session-flow.md)
+- [Device binding (proof of key possession)](./device-binding.md)
 - [Decisions log](./decisions.md)
 - [Implementation plan](./implementation-plan.md)
 - Diagrams: Structurizr DSL sources in `docs/diagrams/code/` (system context and containers), rendered images in `docs/diagrams/img/`
