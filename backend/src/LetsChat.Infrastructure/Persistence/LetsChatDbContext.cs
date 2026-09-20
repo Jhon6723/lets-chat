@@ -8,8 +8,21 @@ public sealed class LetsChatDbContext(DbContextOptions<LetsChatDbContext> option
 {
     public DbSet<PendingEnvelopeRow> PendingEnvelopes => Set<PendingEnvelopeRow>();
 
+    public DbSet<AccountRow> Accounts => Set<AccountRow>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<AccountRow>(b =>
+        {
+            b.ToTable("accounts");
+            b.HasKey(e => e.Id);
+            b.Property(e => e.Id).HasColumnName("id");
+            b.Property(e => e.Username).HasColumnName("username");
+            b.Property(e => e.PasswordHash).HasColumnName("password_hash");
+            b.Property(e => e.CreatedAt).HasColumnName("created_at");
+            b.HasIndex(e => e.Username).IsUnique();
+        });
+
         modelBuilder.Entity<PendingEnvelopeRow>(b =>
         {
             b.ToTable("pending_envelopes");
