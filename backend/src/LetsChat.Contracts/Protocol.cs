@@ -60,11 +60,14 @@ public sealed record PreKeyBundle
 [JsonDerivedType(typeof(SendMessage), "send")]
 [JsonDerivedType(typeof(AckMessage), "ack")]
 [JsonDerivedType(typeof(FetchPendingMessage), "fetch_pending")]
+[JsonDerivedType(typeof(AuthMessage), "auth")]
 public abstract record RelayClientMessage;
 
 public sealed record SendMessage(EncryptedEnvelope Envelope) : RelayClientMessage;
 public sealed record AckMessage(string EnvelopeId) : RelayClientMessage;
 public sealed record FetchPendingMessage : RelayClientMessage;
+/// <summary>Client answer to the nonce challenge: address + signature over "relay-auth:{nonce}".</summary>
+public sealed record AuthMessage(string Address, string Signature) : RelayClientMessage;
 
 /// <summary>WSS messages relay → client.</summary>
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "kind")]
@@ -72,9 +75,15 @@ public sealed record FetchPendingMessage : RelayClientMessage;
 [JsonDerivedType(typeof(AckOkMessage), "ack_ok")]
 [JsonDerivedType(typeof(PendingMessage), "pending")]
 [JsonDerivedType(typeof(ErrorMessage), "error")]
+[JsonDerivedType(typeof(AuthChallengeMessage), "auth_challenge")]
+[JsonDerivedType(typeof(AuthOkMessage), "auth_ok")]
 public abstract record RelayServerMessage;
 
 public sealed record EnvelopeMessage(EncryptedEnvelope Envelope) : RelayServerMessage;
 public sealed record AckOkMessage(string EnvelopeId) : RelayServerMessage;
 public sealed record PendingMessage(IReadOnlyList<EncryptedEnvelope> Envelopes) : RelayServerMessage;
 public sealed record ErrorMessage(string Code, string Message) : RelayServerMessage;
+/// <summary>First frame on every connection: the nonce the client must sign.</summary>
+public sealed record AuthChallengeMessage(string Nonce) : RelayServerMessage;
+/// <summary>Authentication accepted — connection bound to this device address.</summary>
+public sealed record AuthOkMessage(string Address) : RelayServerMessage;

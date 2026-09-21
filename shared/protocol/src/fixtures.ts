@@ -6,11 +6,11 @@
  */
 
 import type {
-  EncryptedEnvelope,
-  PreKeyBundle,
-  PreKeyBundleResponse,
-  RelayClientMessage,
-  RelayServerMessage,
+    EncryptedEnvelope,
+    PreKeyBundle,
+    PreKeyBundleResponse,
+    RelayClientMessage,
+    RelayServerMessage,
 } from './index.js';
 
 export const envelope: EncryptedEnvelope = {
@@ -61,6 +61,12 @@ export const relayClientFetchPending: RelayClientMessage = {
   kind: 'fetch_pending',
 };
 
+export const relayClientAuth: RelayClientMessage = {
+  kind: 'auth',
+  address: 'alice.1',
+  signature: 'c2lnbmVkLXJlbGF5LWF1dGgtbm9uY2U=',
+};
+
 export const relayServerEnvelope: RelayServerMessage = {
   kind: 'envelope',
   envelope,
@@ -82,6 +88,16 @@ export const relayServerError: RelayServerMessage = {
   message: 'unknown kind',
 };
 
+export const relayServerAuthChallenge: RelayServerMessage = {
+  kind: 'auth_challenge',
+  nonce: 'cmFuZG9tLW5vbmNlLTMyLWJ5dGVzLWJhc2U2NA==',
+};
+
+export const relayServerAuthOk: RelayServerMessage = {
+  kind: 'auth_ok',
+  address: 'alice.1',
+};
+
 /** Filename → fixture object, written to shared/protocol/fixtures/. */
 export const FIXTURES: Record<string, unknown> = {
   'envelope.json': envelope,
@@ -90,8 +106,11 @@ export const FIXTURES: Record<string, unknown> = {
   'relay-client-send.json': relayClientSend,
   'relay-client-ack.json': relayClientAck,
   'relay-client-fetch-pending.json': relayClientFetchPending,
+  'relay-client-auth.json': relayClientAuth,
   'relay-server-envelope.json': relayServerEnvelope,
   'relay-server-ack-ok.json': relayServerAckOk,
   'relay-server-pending.json': relayServerPending,
   'relay-server-error.json': relayServerError,
+  'relay-server-auth-challenge.json': relayServerAuthChallenge,
+  'relay-server-auth-ok.json': relayServerAuthOk,
 };

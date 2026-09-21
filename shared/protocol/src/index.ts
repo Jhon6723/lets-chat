@@ -58,10 +58,20 @@ export interface PreKeyBundleResponse {
 export type RelayClientMessage =
   | { kind: 'send'; envelope: EncryptedEnvelope }
   | { kind: 'ack'; envelopeId: string }
-  | { kind: 'fetch_pending' };
+  | { kind: 'fetch_pending' }
+  /**
+   * Device-signature authentication (ADR-0007): client answers the server
+   * nonce challenge by signing "relay-auth:{nonce}" with the device identity
+   * private key. Required before any relay operation.
+   */
+  | { kind: 'auth'; address: DeviceAddress; signature: string };
 
 export type RelayServerMessage =
   | { kind: 'envelope'; envelope: EncryptedEnvelope }
   | { kind: 'ack_ok'; envelopeId: string }
   | { kind: 'pending'; envelopes: EncryptedEnvelope[] }
-  | { kind: 'error'; code: string; message: string };
+  | { kind: 'error'; code: string; message: string }
+  /** First frame on every connection: the nonce the client must sign. */
+  | { kind: 'auth_challenge'; nonce: string }
+  /** Authentication accepted — connection is bound to this device address. */
+  | { kind: 'auth_ok'; address: DeviceAddress };

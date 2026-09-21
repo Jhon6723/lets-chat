@@ -36,6 +36,7 @@ builder.Services.AddSingleton<SessionService>();
 builder.Services.AddSingleton<IDeviceRepository, PostgresDeviceRepository>();
 builder.Services.AddSingleton<IDeviceSignatureVerifier, Ed25519SignatureVerifier>();
 builder.Services.AddSingleton<DeviceService>();
+builder.Services.AddSingleton<RelayAuthService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

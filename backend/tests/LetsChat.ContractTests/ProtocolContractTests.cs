@@ -40,6 +40,7 @@ public class ProtocolContractTests
     [InlineData("relay-client-send.json")]
     [InlineData("relay-client-ack.json")]
     [InlineData("relay-client-fetch-pending.json")]
+    [InlineData("relay-client-auth.json")]
     public void Relay_client_message_fixtures_round_trip(string fixture)
         => AssertRoundTrip<RelayClientMessage>(fixture);
 
@@ -48,6 +49,8 @@ public class ProtocolContractTests
     [InlineData("relay-server-ack-ok.json")]
     [InlineData("relay-server-pending.json")]
     [InlineData("relay-server-error.json")]
+    [InlineData("relay-server-auth-challenge.json")]
+    [InlineData("relay-server-auth-ok.json")]
     public void Relay_server_message_fixtures_round_trip(string fixture)
         => AssertRoundTrip<RelayServerMessage>(fixture);
 
