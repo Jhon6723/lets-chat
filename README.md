@@ -2,7 +2,7 @@
 
 End-to-end encrypted chat PWA with opt-in, high-quality translation (Chinese ↔ Spanish focus). The server is a dumb relay — it only ever sees ciphertext.
 
-Product spec and architecture decisions live in `docs/` (requirements, decisions log, ADRs 0001–0006, C4 diagrams).
+Product spec and architecture decisions live in `docs/` (requirements, decisions log, ADRs 0001–0006, C4 diagrams). Documentation is split by language: `docs/en` is authoritative, `docs/es` holds the Spanish flow guides.
 
 ## Layout
 
