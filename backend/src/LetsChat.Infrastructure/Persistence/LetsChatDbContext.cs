@@ -14,6 +14,8 @@ public sealed class LetsChatDbContext(DbContextOptions<LetsChatDbContext> option
 
     public DbSet<DeviceRow> Devices => Set<DeviceRow>();
 
+    public DbSet<ContactEdgeRow> ContactEdges => Set<ContactEdgeRow>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AccountRow>(b =>
@@ -58,6 +60,28 @@ public sealed class LetsChatDbContext(DbContextOptions<LetsChatDbContext> option
             b.HasOne<AccountRow>()
                 .WithMany()
                 .HasForeignKey(e => e.AccountId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<ContactEdgeRow>(b =>
+        {
+            b.ToTable("contact_edges");
+            b.HasKey(e => e.Id);
+            b.Property(e => e.Id).HasColumnName("id");
+            b.Property(e => e.RequesterAccountId).HasColumnName("requester_account_id");
+            b.Property(e => e.AddresseeAccountId).HasColumnName("addressee_account_id");
+            b.Property(e => e.Status).HasColumnName("status");
+            b.Property(e => e.CreatedAt).HasColumnName("created_at");
+            b.Property(e => e.RespondedAt).HasColumnName("responded_at");
+            b.HasIndex(e => new { e.RequesterAccountId, e.AddresseeAccountId }).IsUnique();
+            b.HasIndex(e => e.AddresseeAccountId);
+            b.HasOne<AccountRow>()
+                .WithMany()
+                .HasForeignKey(e => e.RequesterAccountId)
+                .OnDelete(DeleteBehavior.Cascade);
+            b.HasOne<AccountRow>()
+                .WithMany()
+                .HasForeignKey(e => e.AddresseeAccountId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
