@@ -33,11 +33,14 @@ public sealed class PostgresEnvelopeRepository(IDbContextFactory<LetsChatDbConte
         CancellationToken ct = default)
     {
         await using var ctx = await db.CreateDbContextAsync(ct);
-        return await ctx.PendingEnvelopes
+        // AsNoTracking + row materialization: EF Core cannot project a
+        // JSON-owned entity directly inside a tracked query.
+        var rows = await ctx.PendingEnvelopes
+            .AsNoTracking()
             .Where(r => r.RecipientAddress == recipientAddress)
             .OrderBy(r => r.CreatedAt)
-            .Select(r => r.Envelope)
             .ToListAsync(ct);
+        return rows.Select(r => r.Envelope).ToList();
     }
 
     public async Task MarkDeliveredAsync(string envelopeId, CancellationToken ct = default)
