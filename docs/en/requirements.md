@@ -23,7 +23,7 @@ Each requirement carries an ID for traceability (RF-xx functional, RNF-xx non-fu
 
 | ID | Requirement | Source |
 | --- | --- | --- |
-| RF-10 | Session establishment uses X3DH against the recipient's published prekey bundle | ADR 0006 |
+| RF-10 | Session establishment uses X3DH against the recipient's published prekey bundle, served only to accepted contacts | ADR 0006 |
 | RF-11 | Message keys derive from a Double Ratchet; consumed chain keys are destroyed (forward secrecy, post-compromise security) | ADR 0006 |
 | RF-12 | Message encryption is AEAD (AES-256-GCM); tampered envelopes are rejected by the client | ADR 0006 |
 | RF-13 | The envelope embeds the sender's declared language inside the ciphertext, not in cleartext metadata | ADR 0003, ADR 0006 |

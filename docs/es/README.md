@@ -8,6 +8,7 @@ existen traducidas aquí.
 - [Flujo de sesión de cuenta (JWT + rotación de refresh)](./auth-session-flow.md)
 - [Vinculación de dispositivo (prueba de posesión de clave)](./device-binding.md)
 - [Autenticación por firma de dispositivo (challenge de nonce)](./device-signature-auth.md)
+- [Contactos (solicitud, aceptación, bloqueo — puerta del fetch de prekeys)](./contacts.md)
 
 ## Especificación y decisiones (en inglés)
 

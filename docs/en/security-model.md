@@ -38,6 +38,8 @@ Message history, contacts, and cached translations live in IndexedDB encrypted a
 
 Sensitive relay operations (mailbox fetch, prekey publish, envelope send) are gated by a per-connection challenge: the server issues a single-use random nonce on WebSocket connect; the app signs it with the device Signal identity key — ADR 0007.
 
+The prekey directory itself is contact-gated (ADR 0006, revised): bundles are served only to accepted contacts, and one-directionally to the target of a pending contact request. This prevents address/device enumeration and blocks one-time-prekey pool draining by strangers.
+
 Nothing with mailbox power persists in browser storage. Reconnecting requires a fresh signature against a fresh nonce; there is no long-lived device token to steal. A password compromise does not open the mailbox — the attacker would need to register a new device, which contacts observe as an identity change (Layer 0 closes the loop).
 
 ## Layer 4 — Account authentication (bounded blast radius)
@@ -64,6 +66,7 @@ The backend stores envelopes' ciphertext with TTL, never plaintext; the translat
 | Stolen device / dumped IndexedDB | 2 (vault at rest) |
 | Stolen account credentials | 3 (device signature), 4 (short-lived JWT) |
 | Prekey-bundle injection / MITM | 3 (signed registration), 0 (identity-change UX) |
+| Address enumeration / OTP-pool drain | 3 (contact-gated key directory) |
 | Phishing / consent fatigue | 0 (explicit per-use consent, visible warnings) |
 | XSS in the PWA origin | 5 (CSP, no third-party JS) |
 | Traffic analysis / login metadata | 4 (no external IdP), 6 (minimal retention) |

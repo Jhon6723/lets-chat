@@ -25,8 +25,8 @@ The dumb relay working end-to-end over real persistence.
 | 1.3 | Account session issue: short-lived JWT (~15 min, account scope) + refresh token with rotation and reuse detection (stale refresh → invalidate token family) | ADR 0007 |
 | 1.4 | Device binding: register a device under the account; the registration request must be signed by the device's Signal identity key | ADR 0006, ADR 0007 |
 | 1.5 | Device-signature auth — no stealable token: WS connect → server issues single-use nonce (short TTL) → app signs with device identity key → connection authenticated; sensitive REST ops (prekey publish, mailbox fetch) verified the same way | ADR 0006, ADR 0007 |
-| 1.6 | Prekey bundle REST endpoints (publish own bundle, fetch contact's bundle) behind device-signature auth | ADR 0006, ADR 0007 |
-| 1.7 | Contacts REST endpoints (find user by username, add/list/remove contacts) behind account JWT | ADR 0001, ADR 0007 |
+| 1.6 | Prekey bundle REST endpoints (publish own bundle, fetch contact's bundle) behind device-signature auth; fetch gated to contact edges — executes after 1.7 | ADR 0006, ADR 0007 |
+| 1.7 | Contacts REST endpoints (find user by username, request/accept/decline/block, list/remove) behind account JWT — runs before 1.6 because prekey fetch depends on contact edges | ADR 0001, ADR 0007 |
 | 1.8 | WS relay flow: send → enqueue/push, fetch_pending, ack → markDelivered; recipient identity derived from the authenticated connection, not client-supplied fields | ADR 0001 |
 | 1.9 | Re-validate the spike-01 subscription quirk (push path not firing onMessageDecrypted) against the real relay | spike-01 |
 

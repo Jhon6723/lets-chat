@@ -74,7 +74,7 @@ MLS (Option B) is not rejected — it is **deferred to the groups milestone**, w
 ### Key lifecycle (binding spec)
 
 - **Identity**: each device generates a long-term identity keypair at registration. Private key stored in IndexedDB as a non-extractable CryptoKey where WebCrypto supports it; session/ratchet state lives in the encrypted vault (ADR 0005).
-- **Prekeys**: each device publishes a signed prekey + a batch of one-time prekeys to the relay. The relay is a public-key directory only; it never sees private material.
+- **Prekeys**: each device publishes a signed prekey + a batch of one-time prekeys to the relay. The relay is a *contact-gated* public-key directory — bundles are served only to accepted contacts, and one-directionally to the target of a pending contact request (revised 2026-09-21, see decisions log). It never sees private material.
 - **Session setup**: X3DH against the recipient's fetched bundle, per device.
 - **Message encryption**: Double Ratchet → per-message AES-256-GCM keys; envelopes carry ratchet header + in-ciphertext language hint (per ADR 0003). Old chain keys are destroyed per the ratchet — which is also why Option C of ADR 0005 was rejected.
 - **Delivery**: per-device envelopes; server deletes on ack or TTL expiry.
