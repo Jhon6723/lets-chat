@@ -73,6 +73,14 @@ builder.Services.AddRateLimiter(options =>
 
 var app = builder.Build();
 
+// Buffer request bodies early so the device-signature filter can re-read
+// the raw bytes for its canonical payload hash after model binding.
+app.Use(async (ctx, next) =>
+{
+    ctx.Request.EnableBuffering();
+    await next();
+});
+
 app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();

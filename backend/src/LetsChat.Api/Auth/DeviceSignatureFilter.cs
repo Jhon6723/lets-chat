@@ -50,14 +50,15 @@ public sealed class DeviceSignatureFilter(
 
     private static async Task<string> HashBodyAsync(HttpRequest request)
     {
+        // Buffering is enabled early in the pipeline (Program.cs); model
+        // binding may already have consumed the stream, so rewind first.
         request.EnableBuffering();
-        var bytes = new byte[request.ContentLength ?? 0];
-        var read = 0;
-        while (read < bytes.Length)
-            read += await request.Body.ReadAsync(
-                bytes.AsMemory(read, bytes.Length - read));
         request.Body.Position = 0;
-        return Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
+        using var reader = new StreamReader(request.Body, leaveOpen: true);
+        var body = await reader.ReadToEndAsync();
+        request.Body.Position = 0;
+        return Convert.ToHexString(
+            SHA256.HashData(Encoding.UTF8.GetBytes(body))).ToLowerInvariant();
     }
 }
 
