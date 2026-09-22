@@ -35,9 +35,11 @@ builder.Services.AddSingleton<ITokenIssuer>(_ => new JwtTokenIssuer(
 builder.Services.AddSingleton<SessionService>();
 builder.Services.AddSingleton<IDeviceRepository, PostgresDeviceRepository>();
 builder.Services.AddSingleton<IContactRepository, PostgresContactRepository>();
+builder.Services.AddSingleton<IPreKeyRepository, PostgresPreKeyRepository>();
 builder.Services.AddSingleton<IDeviceSignatureVerifier, Ed25519SignatureVerifier>();
 builder.Services.AddSingleton<DeviceService>();
 builder.Services.AddSingleton<ContactService>();
+builder.Services.AddSingleton<PreKeyService>();
 builder.Services.AddSingleton<RelayAuthService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -88,6 +90,7 @@ app.UseWebSockets();
 app.MapAuth();
 app.MapDevices();
 app.MapContacts();
+app.MapPreKeys();
 app.MapGet("/health", () => Results.Ok(new { status = "ok", service = "lets-chat-relay" }));
 app.Map("/relay", app => app.UseMiddleware<RelayWebSocketMiddleware>());
 

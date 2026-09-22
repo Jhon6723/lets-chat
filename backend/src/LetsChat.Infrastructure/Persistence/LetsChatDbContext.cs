@@ -16,6 +16,12 @@ public sealed class LetsChatDbContext(DbContextOptions<LetsChatDbContext> option
 
     public DbSet<ContactEdgeRow> ContactEdges => Set<ContactEdgeRow>();
 
+    public DbSet<SignedPreKeyRow> SignedPreKeys => Set<SignedPreKeyRow>();
+
+    public DbSet<OneTimePreKeyRow> OneTimePreKeys => Set<OneTimePreKeyRow>();
+
+    public DbSet<PqLastResortPreKeyRow> PqLastResortPreKeys => Set<PqLastResortPreKeyRow>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AccountRow>(b =>
@@ -82,6 +88,53 @@ public sealed class LetsChatDbContext(DbContextOptions<LetsChatDbContext> option
             b.HasOne<AccountRow>()
                 .WithMany()
                 .HasForeignKey(e => e.AddresseeAccountId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<SignedPreKeyRow>(b =>
+        {
+            b.ToTable("signed_prekeys");
+            b.HasKey(e => e.DeviceId);
+            b.Property(e => e.DeviceId).HasColumnName("device_id");
+            b.Property(e => e.KeyId).HasColumnName("key_id");
+            b.Property(e => e.PublicKey).HasColumnName("public_key");
+            b.Property(e => e.Signature).HasColumnName("signature");
+            b.Property(e => e.CreatedAt).HasColumnName("created_at");
+            b.HasOne<DeviceRow>()
+                .WithMany()
+                .HasForeignKey(e => e.DeviceId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<OneTimePreKeyRow>(b =>
+        {
+            b.ToTable("one_time_prekeys");
+            b.HasKey(e => e.Id);
+            b.Property(e => e.Id).HasColumnName("id");
+            b.Property(e => e.DeviceId).HasColumnName("device_id");
+            b.Property(e => e.KeyId).HasColumnName("key_id");
+            b.Property(e => e.PublicKey).HasColumnName("public_key");
+            b.Property(e => e.CreatedAt).HasColumnName("created_at");
+            b.HasIndex(e => e.DeviceId);
+            b.HasIndex(e => new { e.DeviceId, e.KeyId }).IsUnique();
+            b.HasOne<DeviceRow>()
+                .WithMany()
+                .HasForeignKey(e => e.DeviceId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<PqLastResortPreKeyRow>(b =>
+        {
+            b.ToTable("pq_last_resort_prekeys");
+            b.HasKey(e => e.DeviceId);
+            b.Property(e => e.DeviceId).HasColumnName("device_id");
+            b.Property(e => e.KeyId).HasColumnName("key_id");
+            b.Property(e => e.PublicKey).HasColumnName("public_key");
+            b.Property(e => e.Signature).HasColumnName("signature");
+            b.Property(e => e.CreatedAt).HasColumnName("created_at");
+            b.HasOne<DeviceRow>()
+                .WithMany()
+                .HasForeignKey(e => e.DeviceId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
