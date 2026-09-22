@@ -1,4 +1,5 @@
 using LetsChat.Application.Ports;
+using LetsChat.Contracts;
 using LetsChat.Domain.Aggregates;
 using LetsChat.Domain.Entities;
 using LetsChat.Domain.ValueObjects;
@@ -151,4 +152,50 @@ internal sealed class FakeContactRepository : IContactRepository
                 || (e.Status == ContactStatus.Pending
                     && e.RequesterAccountId == ownerAccountId
                     && e.AddresseeAccountId == fetcherAccountId)));
+}
+
+internal sealed class FakePreKeyRepository : IPreKeyRepository
+{
+    public readonly Dictionary<Guid, SignedPreKey> Signed = new();
+    public readonly Dictionary<Guid, Queue<OneTimePreKey>> OneTime = new();
+    public readonly Dictionary<Guid, PqLastResortPreKey> Pq = new();
+
+    public Task PublishAsync(
+        Guid deviceId,
+        SignedPreKey signedPreKey,
+        IReadOnlyList<OneTimePreKey> oneTimePreKeys,
+        PqLastResortPreKey? pqLastResortPreKey,
+        CancellationToken ct = default)
+    {
+        Signed[deviceId] = signedPreKey;
+        if (pqLastResortPreKey is not null) Pq[deviceId] = pqLastResortPreKey;
+        if (!OneTime.TryGetValue(deviceId, out var pool))
+            OneTime[deviceId] = pool = new Queue<OneTimePreKey>();
+        foreach (var otp in oneTimePreKeys) pool.Enqueue(otp);
+        return Task.CompletedTask;
+    }
+
+    public Task<PreKeyBundle?> FetchBundleAsync(
+        Guid deviceId, string address, CancellationToken ct = default)
+    {
+        if (!Signed.TryGetValue(deviceId, out var signed))
+            return Task.FromResult<PreKeyBundle?>(null);
+
+        var otp = OneTime.TryGetValue(deviceId, out var pool) && pool.Count > 0
+            ? pool.Dequeue() : null;
+        Pq.TryGetValue(deviceId, out var pq);
+
+        return Task.FromResult<PreKeyBundle?>(new PreKeyBundle
+        {
+            Address = address,
+            IdentityKey = "idk",
+            SignedPreKey = signed,
+            OneTimePreKey = otp,
+            PqLastResortPreKey = pq,
+        });
+    }
+
+    public Task<int> OneTimeCountAsync(Guid deviceId, CancellationToken ct = default)
+        => Task.FromResult(
+            OneTime.TryGetValue(deviceId, out var pool) ? pool.Count : 0);
 }
