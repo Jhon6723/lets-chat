@@ -9,6 +9,7 @@ existen traducidas aquí.
 - [Vinculación de dispositivo (prueba de posesión de clave)](./device-binding.md)
 - [Autenticación por firma de dispositivo (challenge de nonce)](./device-signature-auth.md)
 - [Contactos (solicitud, aceptación, bloqueo — puerta del fetch de prekeys)](./contacts.md)
+- [Directorio de prekeys (publicación, fetch con gate, claim de OTP)](./prekeys.md)
 
 ## Especificación y decisiones (en inglés)
 

@@ -117,4 +117,3 @@ nada útil": sin un edge, GET /prekeys/{address} es denegado.
   respondidos
 - Rate limiting por origen/destino en la creación de solicitudes
 - Metadata de perfil/contactos (nombres visibles, avatares)
-- Los endpoints de prekeys que consumen CanFetchPrekeysAsync (1.6)

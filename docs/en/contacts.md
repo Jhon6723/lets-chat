@@ -113,4 +113,3 @@ nothing useful": without an edge, GET /prekeys/{address} is denied.
 - Request expiry — pending edges currently live until answered
 - Rate limiting per source/target on request creation
 - Profile/contact metadata (display names, avatars)
-- The actual prekey endpoints that consume CanFetchPrekeysAsync (1.6)
